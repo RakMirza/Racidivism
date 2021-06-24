@@ -79,15 +79,15 @@ new = df1.filter(['AGE','GENDER','substanceabuse','probation','assistancetype','
 # Create components 
 st.markdown("## Los Angeles Homeless Statistics")
 
-first_kpi, second_kpi, third_kpi = st.beta_columns(3)
+first, second, third = st.beta_columns(3)
 
-with first_kpi:
+with first:
     st.markdown(f'<h4 style="text-align: left; color: blue;">2020 Greater LA Homeless Count</h4>',unsafe_allow_html=True)
     total = pd.read_excel("data/homeless_percent-page-1-table-1.xlsx")
     number1 = total.Total.sum()  
     st.markdown(f"<h2 style='text-align: left; color: red;'>{number1}</h2>", unsafe_allow_html=True)
 
-with second_kpi:
+with second:
     st.markdown(f'<h4 style="text-align: center; color: blue;">311 Homeless Encampments Requests(2017-2018)</h4>',unsafe_allow_html=True)
     ra = requests.get("https://data.lacity.org/resource/az43-p47q.json")
     data = ra.json()
@@ -95,7 +95,7 @@ with second_kpi:
     number2 = df.status.count()
     st.markdown(f"<h2 style='text-align: center; color: red;'>{number2}</h2>", unsafe_allow_html=True)
 
-with third_kpi:
+with third:
     st.markdown(f'<h4 style="text-align: center; color: blue;"> Homeless Demographic by Race </h4>',unsafe_allow_html=True)
     demograph = pd.read_excel('data/demograph.xlsx')
     hispanic  = demograph['Total'][0]
@@ -108,9 +108,9 @@ with third_kpi:
 
 st.markdown("", unsafe_allow_html=True) 
 
-first_chart = st.beta_container()
+chart_1 = st.beta_container()
 
-with first_chart:
+with chart_1:
     homeless_stat = pd.DataFrame(new)
 
     fig = px.scatter(homeless_stat, x="AGE", y="GENDER",
@@ -121,10 +121,8 @@ with first_chart:
     height=500,
     title_text='LA County Local Shelter Data Analytics')
     st.plotly_chart(fig)
-second_chart = st.beta_container()     
-  
+    
 st.markdown("<hr/>", unsafe_allow_html=True)   
-
 
 # ************************************** Second Section **********************************************
  
@@ -140,40 +138,41 @@ data = load_data(24038)
 
 st.markdown("## Services in Los Angeles and Surrounding Cities")
 
-first_kpi, second_kpi, third_kpi, fourth_kpi ,fifth_kpi = st.beta_columns(5)
-with first_kpi:
+first, second, third, fourth ,fifth = st.beta_columns(5)
+
+with first:
     st.markdown(f'<h4 style="text-align: left; color: blue;">Homeless</h4>',unsafe_allow_html=True)
     number1 = data['services'].isin(["Homeless Services"]).sum()    
     st.markdown(f"<h1 style='text-align: left; color: red;font-size: 30px;'>{number1}</h1>", unsafe_allow_html=True)
 
-with second_kpi:
+with second:
     st.markdown(f'<h4 style="text-align: left; color: blue;">Emergency</h4>',unsafe_allow_html=True)
     number2 = data ['services'].isin(["Emergency Services"]).sum() 
     st.markdown(f"<h1 style='text-align: left; color: red;font-size: 30px;'>{number2}</h1>", unsafe_allow_html=True)
 
-with third_kpi:
+with third:
     st.markdown(f'<h4 style="text-align: left; color: blue;">Employment</h4>',unsafe_allow_html=True)
     number3 = data['services'].isin(["Employment Services"]).sum()
     st.markdown(f"<h1 style='text-align: left; color: red;font-size: 30px;'>{number3}</h1>", unsafe_allow_html=True)
 
-with fourth_kpi:
+with fourth:
     st.markdown(f'<h4 style="text-align: left; color: blue;">Health</h4>',unsafe_allow_html=True)
     number4 = data['services'].isin(["Health Services"]).sum()
     st.markdown(f"<h1 style='text-align:left; color: red; font-size: 30px;'>{number4}</h1>", unsafe_allow_html=True)
 
-with fifth_kpi:
+with fifth:
     st.markdown(f'<h4 style="text-align: left; color: blue;"> Food/Nutrition</h4>',unsafe_allow_html=True)
     number5 = data['services'].isin(["Food/Nutrition Services"]).sum()
     st.markdown(f"<h1 style='text-align:left; color: red; font-size: 30px;'>{number5}</h1>", unsafe_allow_html=True)
 
-first_chart,second_chart = st.beta_columns(2)
+chart_1,chart_2 = st.beta_columns(2)
 
-with first_chart:
+with chart_1:
     contain1 = st.beta_container()
     with contain1:
         st.map(data,use_container_width=True)    
     
-with second_chart:
+with chart_2:
     contain2 = st.beta_container()
     with contain2:
         fig = px.scatter_mapbox(data_frame = data, lat="latitude", lon="longitude", color="services",hover_name="services",hover_data=data,title="Service Provider Infomation",width=800,height=500,zoom=6,size_max=10)
@@ -181,13 +180,14 @@ with second_chart:
         fig
     
 st.markdown("<hr/>", unsafe_allow_html=True)
+
 # ****************************************** Third Section *********************************************************** 
 
 st.markdown("## Recidivism Statistics")
 
-first_chart, second_chart = st.beta_columns(2)
+chart_1, chart_2= st.beta_columns(2)
 
-with first_chart:    
+with chart_1:    
     dfs = pd.read_csv('data/return.csv')
     dfs['FY 2008-09'] = pd.to_numeric(dfs['FY 2008-09'], errors='coerce')
     dfs['FY 2009-10'] = pd.to_numeric(dfs['FY 2009-10'], errors='coerce')
@@ -198,7 +198,7 @@ with first_chart:
     dfs['FY 2014-15'] = pd.to_numeric(dfs['FY 2014-15'], errors='coerce')
     st.area_chart(dfs)
     
-with second_chart:
+with chart_2:
     felon = pd.read_csv("data/felon.csv")
     felon.rename(columns={'Number':'FY13-14','Number.1':'FY14-15'},inplace=True)
     felon['FY13-14'] = pd.to_numeric(felon['FY13-14'], errors='coerce')
